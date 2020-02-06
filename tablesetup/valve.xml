@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
+    <include file="tablesetup/def-screw.xml"/>
+    <include file="tablesetup/def-valve.xml"/>
+    <instance def="valveScrew">
+        <var name="initBondHostId" value="valveF"/>
+        <var name="initBondTightness" value="4"/>
+        <var name="location" value="(3,3,5)"/>
+        <var name="scale" value="0.254"/>
+    </instance>
+    <instance def="stepperScrew">
+        <var name="initBondHostId" value="stepperF"/>
+        <var name="initBondTightness" value="1"/>
+        <var name="location" value="(2,2,5)"/>
+        <var name="scale" value="0.154"/>
+    </instance>
+    <instance def="ballSwivel">
+        <var name="initBondHostId" value="ballF"/>
+        <var name="initBondTightness" value="1"/>
+        <var name="location" value="(-2,-2,5)"/>
+        <var name="scale" value="0.254"/>
+    </instance>
+    <instance def="plumbing">
+        <var name="location" value="(-3,0,3.5)"/>
+        <var name="hostId" value="plumbingReceiver"/>
+        <var name="scale" value="0.254"/>
+        <var name="mass" value="0"/> 
+    </instance>
+</tabletop>
