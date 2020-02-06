@@ -2,56 +2,63 @@
 <tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
     <include file="tablesetup/def-box.xml"/>
     <include file="tablesetup/def-screw.xml"/>
+    <def name="panelscrew">
+        <var name="id" value="panelscrew"/>
+        <var name="location" value="(0, 0, 0)"/>
+        <var name="rotation" value="(0, 0, 0)"/>
+        <var name="mass" value="0.1"/>
+        <var name="color" value="darkgray"/>
+        <var name="initBondHostId" value=""/>
+        <var name="initBondTightness" value="0"/>
+        <composite id="$id$" location="$location$" rotation="$rotation$" mass="$mass$">
+            <custom
+                location="(0, 0, 0)" rotation="(-90, 0, 0)" color="$color$"
+                file="tablesetup/stl/smile_valve_screw.stl"/> 
+            <guestBondPoint
+                id="$id$bond" type="ScrewType" location="(0, 0, 0)" rotation="(0, 0, 0)"
+                initBondHostId="$initBondHostId$" initBondTightness="1"/>
+        </composite>
+    </def>
     <def name="tube">
+        <var name="id" value="tube0" />
         <var name="location" value="(0,0,0)"/>
         <composite location="$location$">
+            <indicatorLights
+                xspan="1"
+                numLights="1"
+                lightRadius=".2"
+                initState="1"
+                location="(0,0,6)"
+                rotation="(90,0,0)" >
+                <state descriptionName="bad"><light id="0" color="red"/></state>
+                <state descriptionName="good"><light id="0" color="green"/></state>
+            </indicatorLights>
+            <ring
+                color="orange"
+                radiusOuter=".5"
+                radiusInner=".3"
+                zspan="1"
+                location="(0,0,3.5)"
+                rotation="(90,0,0)" />
             <cylinder location="(0,0,0)" rotation="(90,0,0)" yspan="4" radius=".3" color="white"/>
             <cylinder location="(0,0,2)" rotation="(90,0,0)" yspan="1" radius=".4" color="yellow"/>
             <cylinder location="(0,0,-2)" rotation="(90,0,0)" yspan="1" radius=".4" color="yellow"/>
         </composite>
     </def>
     <def name="panelbox">
-        <instance def="screw">
-            <var name="location" value="(-2,.5,12)" />
-            <var name="rotation" value="(90,0,0)" />
-            <var name="tipLength" value="1" />
-            <var name="initBondHostId" value="screwF" />
-            <var name="initBondHostTightness" value="2" />
-        </instance>
         <composite id="test" location="(0, 0, 0)" mass="10">
             <box
                 location="(0, 0, 8)"
                 rotation="(90, 0, 0)"
-                xspan="10"
+                xspan="12"
                 yspan="12"
                 zspan="5"
                 thickness=".5" />
             <block
-                location="(-2, 1.5, 6)"
+                location="(-3, 1.5, 6)"
                 xspan="3"
                 zspan="5" />
-            <instance def="hole">
-                <var name="location" value="(-2, 1, 12)" />
-                <var name="rotation" value="(90, 0, 0)" />
-                <var name="radius" value=".5" />
-                <var name="depth" value="6" />
-            </instance>
-            <indicatorLights
-                xspan="2"
-                numLights="3"
-                lightRadius=".1"
-                location="(2,2,12)"
-                rotation="(90,0,0)" >
-                <state descriptionName="green">
-                    <light id="0" color="red"/>
-                    <light id="1" color="green"/>
-                    <light id="2" color="green"/>
-                </state>
-            </indicatorLights>
-            <instance def="tube"><var name="location" value="(1,1,8)" /></instance>
-            <instance def="tube"><var name="location" value="(2,1,8)" /></instance>
-            <instance def="tube"><var name="location" value="(3,1,8)" /></instance>
-            <composite location="(-2, 1, 6)" rotation="(90,-90,0)">
+            <composite location="(-3, 1, 6)" rotation="(90,-90,0)">
                 <toggleSwitch
                     angle="15"
                     id="toggle"
@@ -61,15 +68,13 @@
                         <!-- <downstream id="$id$Indicator"/> -->
                 </toggleSwitch>
             </composite>
-
+            <instance def="tube"><var name="id" value="tube0" /><var name="location" value="(0,1.7,6)" /></instance>
+            <!-- <instance def="tube"><var name="id" value="tube1" /><var name="location" value="(2,1.7,6)" /></instance> -->
+            <!-- <instance def="tube"><var name="id" value="tube2" /><var name="location" value="(4,1.7,6)" /></instance> -->
+            <!-- <hostBondPoint id="tube0bond" type="ScrewType" location="(0, 0, 0)" rotation="(0, 0, 0)"> -->
+            <!--     <tightness location="(0, 0, 3.5)" rotation="(0, 0, 0)"/> -->
+            <!--     <tightness location="(0, 0, 3)" rotation="(0, 0, 0)"/> -->
+            <!-- </hostBondPoint> -->
         </composite>
     </def>
-    <!-- <def name="panel"> -->
-    <!--     <composite id="test" location="(0, 0, 8)" > -->
-    <!--         <instance def="panelbox"></instance> -->
-    <!--     <!-\-     <description name="shape" value="panelbox"/> -\-> -->
-    <!--     <!-\-     <block location="(-3, -4, 5)" xspan="2" yspan="2" zspan="2" ></block> -\-> -->
-    <!--     <!-\-     <block location="(3, -4, 5)" xspan="2" yspan="2" zspan="2" ></block> -\-> -->
-    <!--     </composite> -->
-    <!-- </def> -->
 </tabletop>

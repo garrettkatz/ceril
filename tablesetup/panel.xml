@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
     <include file="tablesetup/def-panel.xml"/>
-    <instance def="panelbox"></instance>
+    <!-- <instance def="panelbox"></instance> -->
+    <instance def="panelscrew">
+        <var name="location" value="(5,0,2.25)" /> <!-- tip is 1.25 below screw (0,0,0) reference frame -->
+        <var name="initBondHostId" value="tube0bond" />
+        <var name="initBondHostTightness" value="0" />
+    </instance>
+    <composite location="(5,0,.5)">
+        <ring
+            color="orange"
+            radiusOuter="1"
+            radiusInner=".5"
+            zspan="1"
+            location="(0,0,0)"/>
+        <hostBondPoint id="tube0bond" type="ScrewType" location="(0, 0, 1.75)" rotation="(0, 0, 0)">
+            <!-- 1.75 = 1.25 for screw offset + .5 for ring zspan/2>
+            <!-- relative to bond point location, where screw origin starts upon fastening -->
+            <tightness location="(0, 0, -.5)" rotation="(0, 0, 0)"/>
+            <tightness location="(0, 0, -1)" rotation="(0, 0, 0)"/>
+        </hostBondPoint>
+    </composite>
+
 </tabletop>
