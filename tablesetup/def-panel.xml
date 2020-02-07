@@ -3,6 +3,7 @@
     <include file="tablesetup/def-box.xml"/>
     <include file="tablesetup/def-screw.xml"/>
     <def name="panelscrew">
+         <!-- tip is 1.25 below screw (0,0,0) reference frame -->
         <var name="id" value="panelscrew"/>
         <var name="location" value="(0, 0, 0)"/>
         <var name="rotation" value="(0, 0, 0)"/>
@@ -40,6 +41,11 @@
                 zspan="1"
                 location="(0,0,3.5)"
                 rotation="(90,0,0)" />
+            <hostBondPoint id="$id$bond" type="ScrewType" location="(0, -1.75, 3.5)" rotation="(90, 0, 0)">
+                <!-- 1.75 = 1.25 for screw offset + .5 for ring zspan/2-->
+                <!-- relative to bond point location, where screw origin starts upon fastening -->
+                <tightness location="(0, 0, -2.75)" rotation="(0, 0, 0)"/>
+            </hostBondPoint>
             <cylinder location="(0,0,0)" rotation="(90,0,0)" yspan="4" radius=".3" color="white"/>
             <cylinder location="(0,0,2)" rotation="(90,0,0)" yspan="1" radius=".4" color="yellow"/>
             <cylinder location="(0,0,-2)" rotation="(90,0,0)" yspan="1" radius=".4" color="yellow"/>
@@ -69,12 +75,8 @@
                 </toggleSwitch>
             </composite>
             <instance def="tube"><var name="id" value="tube0" /><var name="location" value="(0,1.7,6)" /></instance>
-            <!-- <instance def="tube"><var name="id" value="tube1" /><var name="location" value="(2,1.7,6)" /></instance> -->
-            <!-- <instance def="tube"><var name="id" value="tube2" /><var name="location" value="(4,1.7,6)" /></instance> -->
-            <!-- <hostBondPoint id="tube0bond" type="ScrewType" location="(0, 0, 0)" rotation="(0, 0, 0)"> -->
-            <!--     <tightness location="(0, 0, 3.5)" rotation="(0, 0, 0)"/> -->
-            <!--     <tightness location="(0, 0, 3)" rotation="(0, 0, 0)"/> -->
-            <!-- </hostBondPoint> -->
+            <instance def="tube"><var name="id" value="tube1" /><var name="location" value="(2,1.7,6)" /></instance>
+            <instance def="tube"><var name="id" value="tube2" /><var name="location" value="(4,1.7,6)" /></instance>
         </composite>
     </def>
 </tabletop>
