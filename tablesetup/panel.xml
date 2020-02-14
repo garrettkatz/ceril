@@ -4,7 +4,7 @@
     <instance def="panelbox"></instance>
     <instance def="panelscrew">
         <var name="location" value="(0,0,0)" />
-        <var name="initBondHostId" value="tube0bond" />
+        <var name="initBondHostId" value="tube1bond" />
         <var name="initBondHostTightness" value="1" />
     </instance>
     <!-- <composite location="(5,0,.5)"> -->

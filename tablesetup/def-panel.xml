@@ -21,18 +21,22 @@
         </composite>
     </def>
     <def name="tube">
-        <var name="id" value="tube0" />
+        <var name="num" value="0" />
+        <var name="id" value="tube$num$" />
         <var name="location" value="(0,0,0)"/>
+        <var name="initColor" value="red"/>
         <composite location="$location$">
             <indicatorLights
+                id="light$num$"
                 xspan="1"
                 numLights="1"
                 lightRadius=".2"
                 initState="1"
                 location="(0,0,6)"
                 rotation="(90,0,0)" >
-                <state descriptionName="bad"><light id="0" color="red"/></state>
-                <state descriptionName="good"><light id="0" color="green"/></state>
+                <state descriptionName="badon"><light id="0" color="$initColor$"/></state>
+                <state descriptionName="badoff"><light id="0" color="black"/></state>
+                <state descriptionName="goodon"><light id="0" color="green"/></state>
             </indicatorLights>
             <ring
                 color="orange"
@@ -52,7 +56,7 @@
         </composite>
     </def>
     <def name="panelbox">
-        <composite id="test" location="(0, 0, 0)" mass="10">
+        <composite id="pbox" location="(0, 0, 0)" mass="10">
             <box
                 location="(0, 0, 8)"
                 rotation="(90, 0, 0)"
@@ -70,13 +74,25 @@
                     id="toggle"
                     location="(0, 0, 0)"
                     xspan="4" yspan="1" zspan="0.3"
-                    numStates="2" initState="0" >
-                        <!-- <downstream id="$id$Indicator"/> -->
+                    numStates="3" initState="0" >
+                    <downstream id="light0"/>
+                    <downstream id="light1"/>
+                    <downstream id="light2"/>
                 </toggleSwitch>
             </composite>
-            <instance def="tube"><var name="id" value="tube0" /><var name="location" value="(0,1.7,6)" /></instance>
-            <instance def="tube"><var name="id" value="tube1" /><var name="location" value="(2,1.7,6)" /></instance>
-            <instance def="tube"><var name="id" value="tube2" /><var name="location" value="(4,1.7,6)" /></instance>
+            <!-- <chain start="(-3,1.5,8)" end="(-3,1.5,10)" linkCount="6" /> no good inside composite -->
+            <instance def="tube">
+                <var name="num" value="0" /><var name="location" value="(0,1.7,6)" />
+                <var name="initColor" value="green" />
+            </instance>
+            <instance def="tube">
+                <var name="num" value="1" /><var name="location" value="(2,1.7,6)" />
+                <var name="initColor" value="red" />
+            </instance>
+            <instance def="tube">
+                <var name="num" value="2" /><var name="location" value="(4,1.7,6)" />
+                <var name="initColor" value="red" />
+            </instance>
         </composite>
     </def>
 </tabletop>
