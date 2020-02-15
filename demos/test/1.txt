@@ -1,0 +1,5 @@
+11,trigger,LeftHand,toggle
+11,changeControlState,light0,badoff
+11,changeControlState,light1,badoff
+11,changeControlState,light2,badoff
+11,changeControlState,toggle,1

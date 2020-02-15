@@ -1,0 +1,8 @@
+0,create,pbox,shape,composite
+0,create,panelscrew,shape,composite
+0,initializeControl,light0,indicatorLights,pbox,badon
+0,initializeControl,light1,indicatorLights,pbox,badon
+0,initializeControl,light2,indicatorLights,pbox,badon
+0,initializeControl,toggle,toggleSwitch,pbox,0
+0,move,pbox,-0.0030386227,-0.007952419,-2.0230124,-0.24128848,0.10443048,0.027148893
+0,move,panelscrew,2.012831,2.73313,7.4618335,89.75897,0.104143076,0.027975047
