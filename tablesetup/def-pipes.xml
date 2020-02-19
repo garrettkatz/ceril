@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
     <include file="tablesetup/def-hcyl.xml"/>
-    <!-- <def name="pliers"> -->
-    <!-- </def> -->
+    <def name="pliers">
+        <var name="location" value="(0,0,0)"/>
+        <var name="rotation" value="(0,0,0)"/>
+        <composite location="$location$" rotation="$rotation$">
+            <hostBondPoint type="plier" >
+                <tightness location="(0, .9, 0)"/>
+                <tightness location="(0, .7, 0)"/>
+            </hostBondPoint>
+            <block location="(-.4,-.5,0)" rotation="(0,0,-30)" xspan=".2" yspan="1" zspan=".4" color="black"/>
+            <block location="(.4,-.5,0)" rotation="(0,0,30)" xspan=".2" yspan="1" zspan=".4" color="black"/>
+            <block location="(-.1,.2,0)" rotation="(0,0,5)" xspan=".2" yspan=".5" zspan=".4" color="gray"/>
+            <block location="(.1,.2,0)" rotation="(0,0,-5)" xspan=".2" yspan=".5" zspan=".4" color="gray"/>
+        </composite>
+    </def>
+    <def name="debris">
+        <var name="location" value="(0,0,0)"/>
+        <var name="rotation" value="(0,0,0)"/>
+        <var name="xspan" value="1"/>
+        <var name="yspan" value="1"/>
+        <var name="zspan" value="1"/>
+        <var name="color" value="green"/>
+        <composite location="$location$" rotation="$rotation$">
+            <guestBondPoint type="plier" />
+            <block location="(0,0,0)" xspan="$xspan$" yspan="$yspan$" zspan="$zspan$" color="$color$" />
+        </composite>
+    </def>
     <def name="pipe">
         <var name="location" value="(0,0,0)"/>
         <composite location="$location$">
@@ -22,9 +46,10 @@
         </composite>
     </def>
     <def name="pipes">
-        <composite location="(0,0,0)">
+        <var name="mass" value="1000"/>
+        <composite location="(0,0,0)" mass="$mass$">
             <block
-                location="(0,0,.25)"
+                location="(0,0,.25)"                
                 xspan="10"
                 yspan="5"
                 zspan=".5" />

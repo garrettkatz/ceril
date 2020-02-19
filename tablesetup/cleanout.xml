@@ -2,10 +2,21 @@
 <tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
     <include file="tablesetup/def-pipes.xml"/>
     <instance def="pipes"></instance>
-    <block
-        xspan=".5"
-        yspan=".5"
-        zspan=".5"
-        location="(0,-2.5, 9)"
-        color="red"/>
+    <instance def="pliers">
+        <var name="location" value="(0,-4,.2)" />
+    </instance>
+    <!-- <instance def="debris"> -->
+    <!--     <var name="location" value="(0,-3,2)" /> -->
+    <!--     <var name="xspan" value=".5" /> -->
+    <!--     <var name="yspan" value=".5" /> -->
+    <!--     <var name="zspan" value=".5" /> -->
+    <!--     <var name="color" value="blue" /> -->
+    <!-- </instance> -->
+    <instance def="debris">
+        <var name="location" value="(0,-2.5,9)" />
+        <var name="xspan" value=".5" />
+        <var name="yspan" value=".5" />
+        <var name="zspan" value=".5" />
+        <var name="color" value="red" />
+    </instance>
 </tabletop>
