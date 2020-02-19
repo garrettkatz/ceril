@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
+    <include file="tablesetup/def-hcyl.xml"/>
+    <instance def="hcyl">
+        <var name="z" value="2"/>
+        <var name="length" value="2"/>
+        <var name="inradius" value=".75"/>
+        <var name="outradius" value="1"/>
+        <var name="rotation" value="(90,0,0)"/>
+    </instance>
+</tabletop>
+
+

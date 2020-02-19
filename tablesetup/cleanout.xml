@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
+    <include file="tablesetup/def-pipes.xml"/>
+    <instance def="pipes"></instance>
+    <block
+        xspan=".5"
+        yspan=".5"
+        zspan=".5"
+        location="(0,-2.5, 9)"
+        color="red"/>
+</tabletop>

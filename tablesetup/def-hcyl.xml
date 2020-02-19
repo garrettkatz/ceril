@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
+    <def name="quad">
+        <var name="x" value="0"/>
+        <var name="y" value="0"/>
+        <var name="z" value="0"/>
+        <var name="length" value="4"/>
+        <var name="inradius" value=".75"/>
+        <var name="outradius" value="1"/>
+        <var name="rotation" value="(0,0,0)"/>
+        <composite location="($x$,$y$,$z$)" rotation="$rotation$">
+            <block
+                color="darkgray"
+                location="($(inradius+outradius)/2$,0,0)"
+                xspan="$outradius-inradius$"
+                yspan="$outradius/2.6$"
+                zspan="$length$" />
+            <block
+                color="darkgray"
+                location="($-(inradius+outradius)/2$,0,0)"
+                xspan="$outradius-inradius$"
+                yspan="$outradius/2.6$"
+                zspan="$length$" />
+            <block
+                color="darkgray"
+                location="(0,$(inradius+outradius)/2$,0)"
+                rotation="(0,0,90)"
+                xspan="$outradius-inradius$"
+                yspan="$outradius/2.6$"
+                zspan="$length$" />
+            <block
+                color="darkgray"
+                location="(0,$-(inradius+outradius)/2$,0)"
+                rotation="(0,0,90)"
+                xspan="$outradius-inradius$"
+                yspan="$outradius/2.6$"
+                zspan="$length$" />
+        </composite>
+    </def>
+    <def name="hcyl">
+        <var name="x" value="0"/>
+        <var name="y" value="0"/>
+        <var name="z" value="2"/>
+        <var name="length" value="4"/>
+        <var name="inradius" value=".75"/>
+        <var name="outradius" value="1"/>
+        <var name="rotation" value="(0,0,0)"/>
+        <composite location="($x$,$y$,$z$)" rotation="$rotation$">
+            <instance def="quad">
+                <var name="length" value="$length$"/>
+                <var name="inradius" value="$inradius$"/>
+                <var name="outradius" value="$outradius$"/>
+            </instance>
+            <instance def="quad">
+                <var name="length" value="$length$"/>
+                <var name="inradius" value="$inradius$"/>
+                <var name="outradius" value="$outradius$"/>
+                <var name="rotation" value="(0,0,22.5)"/>
+            </instance>
+            <instance def="quad">
+                <var name="length" value="$length$"/>
+                <var name="inradius" value="$inradius$"/>
+                <var name="outradius" value="$outradius$"/>
+                <var name="rotation" value="(0,0,45)"/>
+            </instance>
+            <instance def="quad">
+                <var name="length" value="$length$"/>
+                <var name="inradius" value="$inradius$"/>
+                <var name="outradius" value="$outradius$"/>
+                <var name="rotation" value="(0,0,66.5)"/>
+            </instance>
+        </composite>
+    </def>
+</tabletop>
+
+
