@@ -8,10 +8,10 @@ class SmileState(object):
 
         self.things = {"tabletop": tabletop}
         self.support = {"tabletop": "nothing"}
-        self.gripping = {"left": "nothing", "right": "nothing"}
+        self.gripping = {"LeftHand": "nothing", "RightHand": "nothing"}
     
     def tree_string(self):
-        s = "%s in left, %s in right" % (self.gripping["left"], self.gripping["right"])
+        s = "%s in left, %s in right" % (self.gripping["LeftHand"], self.gripping["RightHand"])
         for name, thing in self.things.items():
             s += "\n%s on %s" % (thing, self.support[name])
         return s

@@ -21,14 +21,12 @@ def parse_demo(demo_path):
         if action["name"] == "grasp":
 
             hand, thing = action["args"]
-            hand = ["left","right"]["LR".index(hand[0])]
             new_state.gripping[hand] = thing
             new_state.support[thing] = hand
 
         if action["name"] == "release":
 
             hand, = action["args"]
-            hand = ["left","right"]["LR".index(hand[0])]
             thing = new_state.gripping[hand]
             new_state.gripping[hand] = "nothing"
             new_state.support[thing] = "nothing"

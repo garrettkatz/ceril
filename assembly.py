@@ -1,3 +1,4 @@
+import numpy as np
 import shape as sh
 
 class Assembly(object):
@@ -5,6 +6,8 @@ class Assembly(object):
         self.category = category
         self.sub_assemblies = sub_assemblies
         self.name = name
+        self.position = np.zeros((3,1))
+        self.rotation = np.zeros((3,))
     
     def __str__(self):
         s = "Assembly<%s>" % self.category
