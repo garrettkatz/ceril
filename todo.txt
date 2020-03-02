@@ -1,0 +1,3 @@
+Rerecord SMILE demo
+    standardized ids (begin with assembly type)
+
