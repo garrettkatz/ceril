@@ -9,6 +9,7 @@ class SmileState(object):
         self.things = {"tabletop": tabletop}
         self.gripping = {"LeftHand": "nothing", "RightHand": "nothing"}
         self.controls = {}
+        self.__name__ = "" # for pyhop compatibility
     
     def tree_string(self):
         s = "%s in left, %s in right" % (self.gripping["LeftHand"], self.gripping["RightHand"])

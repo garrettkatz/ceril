@@ -1,20 +1,3 @@
-"""
-primitives:
-
-grasp(hand, thing): grasps the thing with hand
-move(thing, position, rotation): moves the thing to given pose
-release(hand, position, rotation): releases whatever thing in hand at given pose
-trigger(hand, toggle): changes toggle state with hand
-loosen(hand, host bond, host thing, guest bond, guest thing): loosen thing bond with hand
-
-higher-level tasks:
-unscrew(hand, screw):
-    [grasp(hand, screw), loosen(hand, host bond, host thing, guest bond, guest thing)]
-remove_screw(hand, screw):
-    [unscrew, release]
-retire_screw(hand, screw):
-    [trigger, remove_screw, trigger]
-"""
 import copct as co
 import smile_state as st
 
@@ -28,12 +11,66 @@ def causes(v):
             g.add((state_tuples[0], "unscrew", (hand, name)))
         if tasks == ("unscrew","release"):
             hand, name = args[0]
-            g.add((state_tuples[0], "remove_screw", (hand, name)))
+            g.add((state_tuples[0], "discard_screw", (hand, name)))
     if len(v) == 3:
-        if tasks == ("trigger","remove_screw","trigger"):
+        if tasks == ("trigger","discard_screw","trigger"):
             hand, name = args[1]
-            g.add((state_tuples[0], "retire_screw", (hand, name)))
+            g.add((state_tuples[0], "retire_screw", (name,)))
     return g
+
+def htn_methods():
+
+    def retire_screw(state, screw):
+        hand = "LeftHand"
+        return [
+            ("trigger", hand, "toggle"),
+            ("discard_screw", hand, screw),
+            ("trigger", hand, "toggle"),
+        ]
+
+    def discard_screw(state, hand, screw):
+        position = (10., 0., 0.)
+        rotation = (0., 0., 0.)
+        return [
+            ("unscrew", hand, screw),
+            ("release", hand, position, rotation),
+        ]
+    
+    def unscrew(state, hand, screw):
+        host_bond, host = "tube1bond", "pbox"
+        guest_bond, tightness = "panelscrewbond", 0
+        return [
+            ("grasp", hand, screw),
+            ("loosen", hand, host_bond, host, guest_bond, screw, tightness),
+        ]
+
+    return dict(locals())
+
+def htn_operators():
+
+    def grasp(state, hand, name):
+        if state.gripping[hand] != "nothing": return False
+        state.gripping[hand] = name
+        return state
+
+    def release(state, hand, position, rotation):
+        if state.gripping[hand] == "nothing": return False
+        name = state.gripping[hand]
+        state.gripping[hand] = "nothing"
+        thing = state.things[name]
+        thing.position = position
+        thing.rotation = rotation
+        return state
+    
+    def trigger(state, hand, control):
+        if state.gripping[hand] != "nothing": return False
+        return state
+
+    def loosen(state, hand, host_bond, host, guest_bond, guest, tightness):
+        if state.gripping[hand] != guest: return False
+        return state
+
+    return dict(locals())
 
 
 if __name__ == "__main__":
@@ -60,14 +97,3 @@ if __name__ == "__main__":
         states, tasks, args = zip(*u)
         print(tasks)
     
-    # # Display results
-    # print('Observed w:')
-    # print(w)
-    # print('Singleton sub-covers:')
-    # for jk in itr.combinations(range(7),2):
-    #     if len(g[jk])>0:
-    #         print("sub-seq from %d to %d covered by: %s"%(jk[0], jk[1], g[jk]))
-    # print('Top-level covers:')
-    # print([u for (u,_,_,_,_) in tlcovs])
-    # print('MC top-level covers:')
-    # print([u for (u,_,_,_,_) in tlcovs_ml])
