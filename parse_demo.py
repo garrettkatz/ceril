@@ -14,23 +14,9 @@ def parse_demo(demo_path):
         with open("%s/%d.txt" % (demo_path, n), "r") as f:
             lines = [line.strip().split(",") for line in f.readlines()]
 
-        # Extract the current action (first line of demo file)
-        # print(lines[0])
+        # Initialize current action and new state
         action = {"name": lines[0][1], "args": tuple(lines[0][2:])}
-        actions.append(action)
-        
-        # Initialize a new state after action is performed
         new_state = cp.deepcopy(states[-1])
-
-        # Update the new state depending on the action
-        if action["name"] == "grasp":
-            hand, thing = action["args"]
-            new_state.gripping[hand] = thing
-
-        if action["name"] == "release":
-            hand, = action["args"]
-            thing = new_state.gripping[hand]
-            new_state.gripping[hand] = "nothing"
 
         # Update control states for all controls
         for line in lines[1:]:
@@ -45,6 +31,18 @@ def parse_demo(demo_path):
             new_state.things[name].position = tuple(map(float, line[3:6]))
             new_state.things[name].rotation = tuple(map(float, line[6:9]))
 
+        # Update grippers and object positions
+        if action["name"] == "grasp":
+            hand, name = action["args"]
+            new_state.gripping[hand] = name
+        if action["name"] == "release":
+            hand, = action["args"]
+            name = new_state.gripping[hand]
+            new_state.gripping[hand] = "nothing"
+            thing = new_state.things[name]
+            action["args"] += (thing.position, thing.rotation)
+
+        actions.append(action)
         states.append(new_state)
         
     # print(fnames)

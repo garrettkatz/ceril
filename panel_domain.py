@@ -2,18 +2,16 @@
 primitives:
 
 grasp(hand, thing): grasps the thing with hand
-move(thing, position, rotation): moves the thing to given orientation
-release(hand): releases whatever thing in hand
+move(thing, position, rotation): moves the thing to given pose
+release(hand, position, rotation): releases whatever thing in hand at given pose
 trigger(hand, toggle): changes toggle state with hand
 loosen(hand, host bond, host thing, guest bond, guest thing): loosen thing bond with hand
 
 higher-level tasks:
 unscrew(hand, screw):
     [grasp(hand, screw), loosen(hand, host bond, host thing, guest bond, guest thing)]
-putdown(hand, thing, position, rotation)
-    [[v move(thing, position, rotation)], release(hand)]
 remove_screw(hand, screw):
-    [unscrew, putdown]
+    [unscrew, release]
 retire_screw(hand, screw):
     [trigger, remove_screw, trigger]
 """
@@ -22,28 +20,21 @@ import smile_state as st
 
 def causes(v): 
     g = set() # set of possible causes
-    states, tasks, args = zip(*v)
-    state0 = st.from_tuple(states[0])
-    if len(v) == 1:
-        if tasks == ("release",):
-            hand = args[0][0]
-            name = state0.gripping[hand]
-            thing = state0.things[name]
-            position = thing.position
-            rotation = thing.rotation
-            g.add((state0.tuplify(), "putdown", (hand, name, position, rotation)))
+    state_tuples, tasks, args = zip(*v)
+    # states = [st.from_tuple(s) for s in state_tuples]
     if len(v) == 2:
         if tasks == ("grasp","loosen"):
             hand, name = args[0]
-            g.add((state0.tuplify(), "unscrew", (hand, name)))
-        if tasks == ("unscrew","putdown"):
+            g.add((state_tuples[0], "unscrew", (hand, name)))
+        if tasks == ("unscrew","release"):
             hand, name = args[0]
-            g.add((state0.tuplify(), "remove_screw", (hand, name)))
+            g.add((state_tuples[0], "remove_screw", (hand, name)))
     if len(v) == 3:
         if tasks == ("trigger","remove_screw","trigger"):
             hand, name = args[1]
-            g.add((state0.tuplify(), "retire_screw", (hand, name)))
+            g.add((state_tuples[0], "retire_screw", (hand, name)))
     return g
+
 
 if __name__ == "__main__":
     
