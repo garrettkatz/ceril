@@ -7,34 +7,59 @@ class SmileState(object):
         tabletop = asm.block("tabletop")
 
         self.things = {"tabletop": tabletop}
-        self.support = {"tabletop": "nothing"}
         self.gripping = {"LeftHand": "nothing", "RightHand": "nothing"}
+        self.controls = {}
     
     def tree_string(self):
         s = "%s in left, %s in right" % (self.gripping["LeftHand"], self.gripping["RightHand"])
         for name, thing in self.things.items():
-            s += "\n%s on %s" % (thing, self.support[name])
+            s += "\n%s at %s" % (thing, thing.position)
+        # for name, control_state in self.controls.items():
+        #     s += "\n%s state is %s" % (name, control_state)
+        s += "\n" + str(self.controls)
         return s
     
-    def copy(self):
-        state = SmileState()
-        state.things = dict(self.things)
-        state.support = dict(self.support)
-        state.gripping = dict(self.gripping)
-        return state
+    def tuplify(self):
+        # Unique hashable state representation (tuples of tuples)
+        hands = ["LeftHand", "RightHand"]
+        things = sorted(self.things.keys())
+        controls = sorted(self.controls.keys())
+        return tuple(
+            tuple((k,d[k]) for k in sorted(d.keys()))
+            for d in [self.gripping, self.things, self.controls])
+
+def from_tuple(tup):
+    state = SmileState()
+    state.gripping = {k:v for (k,v) in tup[0]}
+    state.things = {k:v for (k,v) in tup[1]}
+    state.controls = {k:v for (k,v) in tup[2]}
+    return state
 
 def load_from_smile_txt(fname):
 
+    # Initialize state and file lines
     state = SmileState()
+    with open(fname,"r") as f:
+        lines = [line.strip().split(",") for line in f.readlines()]
 
-    with open(fname,"r") as txt:
-        for line in txt:
-            tokens = line.strip().split(",")
-            idx, event = tokens[:2]
-            if event == "create":
-                name, object_type = tokens[2], tokens[4]
-                state.things[name] = asm.Assembly(object_type, [], name)
-                state.support[name] = "tabletop"
+    # First pass: create objects
+    for line in lines:
+        if line[1] != "create": continue
+        name, object_type = line[2], line[4]
+        state.things[name] = asm.Assembly(object_type, [], name)
+
+    # Next pass: initialize controls
+    for line in lines:
+        if line[1] != "initializeControl": continue
+        name, control_state = line[2], line[5]
+        state.controls[name] = control_state
+
+    # Next pass: position objects
+    for line in lines:
+        if line[1] != "move": continue
+        name = line[2]
+        state.things[name].position = tuple(map(float, line[3:6]))
+        state.things[name].rotation = tuple(map(float, line[6:9]))
 
     return state
 
@@ -254,3 +279,7 @@ if __name__ == "__main__":
     # print(SmileState())
     state = load_from_smile_txt("demos/test/0.txt")
     print(state.tree_string())
+    print(state.tuplify())
+    s = set([state.tuplify()])
+    print(from_tuple(state.tuplify()).tree_string())
+

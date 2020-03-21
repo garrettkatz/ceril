@@ -237,3 +237,4 @@ def logCovers(covers, log_file, include_states=False):
             log_file.write("  Covers leaves {}-{}, {} nodes in tree\n".format(k[i],k[i+1]-1, ts[i]))
             log_file.write("  Min/max causal chain length to leaves: {}/{}\n".format(d_min[i],d_max[i]))
         log_file.write("\n")
+
