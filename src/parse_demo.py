@@ -2,10 +2,10 @@ import copy as cp
 import glob as gb
 import smile_state as st
 
-def parse_demo(demo_path):
+def parse_demo(demo_path, scale=1):
     
     # Initialize first state and empty action list    
-    states = [st.from_smile_txt(demo_path + "/0.txt")]
+    states = [st.from_smile_txt(demo_path + "/0.txt", scale)]
     actions = []
 
     # Enumerate all demo files and process in order
@@ -28,7 +28,7 @@ def parse_demo(demo_path):
         for line in lines[1:]:
             if line[1] != "move": continue
             name = line[2]
-            new_state.things[name].position = tuple(map(float, line[3:6]))
+            new_state.things[name].position = tuple(map(lambda x: scale*float(x), line[3:6]))
             new_state.things[name].rotation = tuple(map(float, line[6:9]))
 
         # Update grippers and object positions
@@ -40,7 +40,9 @@ def parse_demo(demo_path):
             name = new_state.gripping[hand]
             new_state.gripping[hand] = "nothing"
             thing = new_state.things[name]
-            action["args"] += (thing.position, thing.rotation)
+            action["args"] += (
+                tuple(map(lambda x: scale*float(x), thing.position)),
+                tuple(map(float, thing.rotation)))
 
         actions.append(action)
         states.append(new_state)

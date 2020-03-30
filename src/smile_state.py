@@ -4,14 +4,15 @@ from mpl_toolkits.mplot3d import Axes3D
 
 class SmileState(object):
 
-    def __init__(self):
+    def __init__(self, scale=1):
 
-        tabletop = asm.Assembly(name="tabletop", position=(0,0,-1), bbox=(20,12,2))
+        tabletop = asm.Assembly(name="tabletop",
+            position=(0,0,-1*scale),
+            bbox=(20*scale,12*scale,2*scale))
 
         self.things = {"tabletop": tabletop}
         self.gripping = {"LeftHand": "nothing", "RightHand": "nothing"}
         self.controls = {}
-        self.__name__ = "" # for pyhop compatibility
     
     def tree_string(self):
         s = "%s in left, %s in right" % (self.gripping["LeftHand"], self.gripping["RightHand"])
@@ -44,20 +45,18 @@ def from_tuple(tup):
     state.controls = {k:v for (k,v) in tup[2]}
     return state
 
-def from_smile_txt(fname):
+def from_smile_txt(fname, scale=1):
 
     # Initialize state and file lines
-    state = SmileState()
+    state = SmileState(scale=scale)
     with open(fname,"r") as f:
         lines = [line.strip().split(",") for line in f.readlines()]
 
     # First pass: create objects
     for line in lines:
         if line[1] != "create": continue
-        assembly = asm.from_smile_txt(line)
+        assembly = asm.from_smile_txt(line, scale=scale)
         state.things[assembly.name] = assembly
-        # name, object_type = line[2], line[4]
-        # state.things[name] = asm.Assembly(object_type, [], name)
 
     # Next pass: initialize controls
     for line in lines:
@@ -69,7 +68,7 @@ def from_smile_txt(fname):
     for line in lines:
         if line[1] != "move": continue
         name = line[2]
-        state.things[name].position = tuple(map(float, line[3:6]))
+        state.things[name].position = tuple(map(lambda x: scale*float(x), line[3:6]))
         state.things[name].rotation = tuple(map(float, line[6:9]))
 
     return state
@@ -78,7 +77,8 @@ def from_smile_txt(fname):
 if __name__ == "__main__":
 
     # print(SmileState())
-    state = from_smile_txt("../demos/test/0.txt")
+    smile_scaling = .25
+    state = from_smile_txt("../demos/test/0.txt", scale=smile_scaling)
     print(state.tree_string())
     print(state.tuplify())
     s = set([state.tuplify()])

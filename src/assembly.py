@@ -21,7 +21,8 @@ class Assembly(object):
         """ render wireframe on  a matplotlib axis3d """
         
         # default kwargs
-        _kwargs = {"marker":"o", "color":"black", "linestyle":"-"}
+        # _kwargs = {"marker":"o", "color":"black", "linestyle":"-"}
+        _kwargs = {"color":"black", "linestyle":"-"}
         _kwargs.update(kwargs)
 
         # Cube vertices and edge indices
@@ -34,10 +35,7 @@ class Assembly(object):
         V -= V.mean(axis=1)[:,np.newaxis]
 
         # Rotation and translation
-        Rx = gm.plane_rotation(self.rotation[0]*np.pi/180,1,2,3);
-        Ry = gm.plane_rotation(self.rotation[1]*np.pi/180,2,0,3);
-        Rz = gm.plane_rotation(self.rotation[2]*np.pi/180,0,1,3);
-        R = Rz.dot(Ry).dot(Rx)
+        R = gm.smile_rotation(self.rotation)
         t = np.array([self.position]).T
         
         # Transform and plot edges
@@ -49,13 +47,13 @@ class Assembly(object):
         E = [(i,3) for i in range(3)]
         for e in E: ax.plot(*V[:,e], linestyle='-', color='r')
 
-def from_smile_txt(line_tokens):
+def from_smile_txt(line_tokens, scale=1):
     """ line_tokens: a tuple of tokens on a "create" line of a SMILE demo txt file """
     kwargs = {"name": line_tokens[2]}
     def lookup(key): return line_tokens[line_tokens.index(key)+1]
     if "category" in line_tokens: kwargs["category"] = lookup("category")
     if "bboxx" in line_tokens:
-        kwargs["bbox"] = tuple(float(lookup("bbox"+k)) for k in "xyz")
+        kwargs["bbox"] = tuple(scale*float(lookup("bbox"+k)) for k in "xyz")
     return Assembly(**kwargs)
 
 if __name__ == "__main__":

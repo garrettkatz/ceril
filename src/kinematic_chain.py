@@ -18,30 +18,31 @@ class Kinematics(object):
             tr.stack([zero, sin,   cos,  zero]),
             tr.stack([zero, zero,  zero, one ]),
         ]).permute(2,0,1)
-    def forward(self, t):
+    def forward(self, t, T0=None):
         # (t)heta: list of joint angles
+        # T0: initial 4x4 transformation matrix of chain root (defaults to identity)
         # DH Z matrix
+        if T0 is None: T0 = tr.eye(4)
         zero, one, cos, sin = tr.zeros(t.shape), tr.ones(t.shape), tr.cos(t), tr.sin(t)
         Z = tr.stack([
-            tr.stack([cos,  -sin,  zero, zero]),
-            tr.stack([sin,   cos,  zero, zero]),
-            tr.stack([zero,  zero, one,  d   ]),
-            tr.stack([zero,  zero, zero, one ]),
+            tr.stack([cos,  -sin,  zero, zero  ]),
+            tr.stack([sin,   cos,  zero, zero  ]),
+            tr.stack([zero,  zero, one,  self.d]),
+            tr.stack([zero,  zero, zero, one   ]),
         ]).permute(2,0,1)
         # Compose transforms
         ZX = tr.matmul(Z, self.X)
-        T = [tr.eye(4)]
+        T = [T0]
         for j in range(len(self.d)): T.append( T[j].mm(ZX[j]) )
         return tr.stack(T)
-
+        
 if __name__ == "__main__":
     
-    # ur10 kinematics
-    # http://rsewiki.elektro.dtu.dk/index.php/UR10
-    d = tr.tensor([.1273, .0, .0, .163941, .1157, .0922])
-    r = tr.tensor([.0, -.612, -.5723, .0, .0, .0])
-    a = tr.tensor([np.pi/2, 0, 0, np.pi/2, -np.pi/2, 0])
-    t0 = tr.tensor([.0, -np.pi/2, .0, -np.pi/2, .0, .0])
+    import ur10
+    d = tr.tensor(ur10.d)
+    r = tr.tensor(ur10.r)
+    a = tr.tensor(ur10.a)
+    t0 = tr.tensor(ur10.t0)
     ur10 = Kinematics(d, r, a)
 
     target = np.eye(4)
