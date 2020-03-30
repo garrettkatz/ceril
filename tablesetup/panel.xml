@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tabletop xmlns="http://synapse.cs.umd.edu/tabletop-xml" xspan="20" yspan="12">
     <include file="tablesetup/def-panel.xml"/>
+
     <instance def="panelbox"></instance>
     <instance def="panelscrew">
-        <var name="location" value="(0,0,0)" />
+        <var name="location" value="(0,0,5)" />
+        <var name="rotation" value="(0,0,0)" />
         <var name="initBondHostId" value="tube1bond" />
         <var name="initBondHostTightness" value="1" />
     </instance>
+
     <!-- <composite location="(5,0,.5)"> -->
     <!--     <ring -->
     <!--         color="orange" -->

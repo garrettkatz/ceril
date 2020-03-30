@@ -1,8 +1,8 @@
-0,create,pbox,shape,composite
-0,create,panelscrew,shape,composite
-0,initializeControl,light0,indicatorLights,pbox,badon
-0,initializeControl,light1,indicatorLights,pbox,badon
-0,initializeControl,light2,indicatorLights,pbox,badon
+0,create,panelscrew,shape,composite,category,panelscrew,bboxx,1,bboxy,1,bboxz,5.6
+0,create,pbox,shape,composite,category,panelbox,bboxx,12,bboxy,5,bboxz,12
 0,initializeControl,toggle,toggleSwitch,pbox,0
-0,move,pbox,-0.0030386227,-0.007952419,-2.0230124,-0.24128848,0.10443048,0.027148893
-0,move,panelscrew,2.012831,2.73313,7.4618335,89.75897,0.104143076,0.027975047
+0,initializeControl,light1,indicatorLights,pbox,badon
+0,initializeControl,light0,indicatorLights,pbox,badon
+0,initializeControl,light2,indicatorLights,pbox,badon
+0,move,panelscrew,2.0096176,1.6967478,7.499049,89.96896,-0.002373424,-0.08535647
+0,move,pbox,0.007383573,-0.0026410865,5.999517,-0.011963772,3.4144908E-4,-0.086228624

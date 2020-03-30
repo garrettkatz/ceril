@@ -1,11 +1,11 @@
 import copy as cp
 import glob as gb
-import smile_state as ss
+import smile_state as st
 
 def parse_demo(demo_path):
     
     # Initialize first state and empty action list    
-    states = [ss.load_from_smile_txt(demo_path + "/0.txt")]
+    states = [st.from_smile_txt(demo_path + "/0.txt")]
     actions = []
 
     # Enumerate all demo files and process in order
@@ -51,7 +51,7 @@ def parse_demo(demo_path):
     return states, actions
 
 if __name__ == "__main__":
-    states, actions = parse_demo("demos/test")
+    states, actions = parse_demo("../demos/test")
     print(states[0].tree_string())
     for t in range(len(actions)):
         print("Action: ", actions[t])

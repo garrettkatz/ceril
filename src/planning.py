@@ -25,6 +25,8 @@ if __name__ == "__main__":
 
     import smile_state as st
     import panel_domain as pd
+    import matplotlib.pyplot as pt
+    from mpl_toolkits.mplot3d import Axes3D
 
     ops = pd.htn_operators()
     methods = pd.htn_methods()
@@ -33,7 +35,7 @@ if __name__ == "__main__":
     for name, fun in methods.items(): ph.declare_methods(name, fun) # one method per task name
 
     # state0 = st.SmileState()
-    state0 = st.load_from_smile_txt("demos/test/0.txt")
+    state0 = st.from_smile_txt("../demos/test/0.txt")
 
     # tasks = [
     #     ("trigger", "LeftHand", "toggle"),
@@ -51,7 +53,15 @@ if __name__ == "__main__":
     success, states = execute(state0, ops, actions)
     print("Success: ", success)
     print(state0.tree_string())
+
+    pt.ion()
+    ax = pt.figure().add_subplot(111, projection='3d')
+    pt.show()
     for s, state in enumerate(states):
         print(actions[s])
         print(state.tree_string())
+        ax.clear()
+        state.render(ax)
+        pt.pause(1)
+
     if not success: print(actions[len(states)])

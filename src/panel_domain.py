@@ -51,11 +51,13 @@ def htn_operators():
     def grasp(state, hand, name):
         if state.gripping[hand] != "nothing": return False
         state.gripping[hand] = name
+        # get named thing's grasp, transform to current position, and run robot motion planner
         return state
 
     def release(state, hand, position, rotation):
         if state.gripping[hand] == "nothing": return False
         name = state.gripping[hand]
+        # get named thing's grasp, transform to target position, and run robot motion planner
         state.gripping[hand] = "nothing"
         thing = state.things[name]
         thing.position = position
@@ -77,7 +79,7 @@ if __name__ == "__main__":
     
     # load demo sequence
     import parse_demo as pd
-    states, actions = pd.parse_demo("demos/test")
+    states, actions = pd.parse_demo("../demos/test")
     tasks, args = zip(*[(a["name"], a["args"]) for a in actions])
     states = [s.tuplify() for s in states]
     # print(states)
