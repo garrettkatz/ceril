@@ -53,8 +53,24 @@ def parse_demo(demo_path, scale=1):
     return states, actions
 
 if __name__ == "__main__":
-    states, actions = parse_demo("../demos/test")
+
+    import matplotlib.pyplot as pt
+
+    smile_scaling = .1 # used to globally rescale distance units in SMILE if needed
+    states, actions = parse_demo("../demos/test", scale=smile_scaling)
+
+    # Prints all the states and actions in the demo
     print(states[0].tree_string())
     for t in range(len(actions)):
         print("Action: ", actions[t])
         print(states[t+1].tree_string())
+
+    fig = pt.figure(figsize=(10,5))
+    for sp, i in enumerate([0, -1]):
+        ax = fig.add_subplot(1, 2, sp+1, projection='3d')
+        states[i].render(ax)
+        ax.set_xlim([-2.5, 2.5])
+        ax.set_ylim([-2.5, 2.5])
+        ax.set_zlim([-.5, 2.5])
+    pt.show()
+    

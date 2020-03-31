@@ -2,16 +2,10 @@ import parse_demo as pd
 import copct as co
 import planning as pl
 
-def imitate(domain, demopath, state0, smile_scaling=1, verbose=0):
+def imitate(domain, demo, state0, verbose=0):
     
-    # Load demonstration
-    demo_states, actions = pd.parse_demo(demopath, scale=smile_scaling)
-    demo_ops, demo_args = zip(*[(a["name"], a["args"]) for a in actions])
-    demo_states = [s.tuplify() for s in demo_states]
-
     # Infer tasks with copct
-    w = tuple(zip(demo_states, demo_ops, demo_args))
-    status, tlcovs, g = co.explain(domain.causes, w, domain.M_causes, verbose=verbose>0)
+    status, tlcovs, g = co.explain(domain.causes, demo, domain.M_causes, verbose=verbose>0)
     tlcovs_ml, ml = co.minCardinalityTLCovers(tlcovs)
     _, ops, args = zip(*tlcovs_ml[0][0]) # arbitrarily use first ML-cover
         
@@ -32,13 +26,19 @@ if __name__ == "__main__":
     import numpy as np
     import matplotlib.pyplot as pt
 
+    # Load demonstration
+    smile_scaling = .1
+    demopath = "../demos/test/"
+    demo_states, actions = pd.parse_demo(demopath, scale=smile_scaling)
+    demo_states = [s.tuplify() for s in demo_states]
+    demo_ops, demo_args = zip(*[(a["name"], a["args"]) for a in actions])
+    demo = tuple(zip(demo_states, demo_ops, demo_args))
+    
     # Run CERIL
     tiger = ts.TigerState()
     tiger.base_x, tiger.base_y, tiger.base_a = 0, -3, np.pi/2
-    smile_scaling = .1
-    demopath = "../demos/test/"
     state0 = pl.State(tiger, st.from_smile_txt(demopath + "0.txt", scale=smile_scaling))
-    success, states, actions = imitate(domain, demopath, state0, smile_scaling=1, verbose=3)
+    success, states, actions = imitate(domain, demo, state0, verbose=3)
 
     # Visualize execution    
     pt.ion()

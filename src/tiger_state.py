@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
     state = TigerState()
     print(state)
-    ax = pt.figure().add_subplot(111, projection='3d')
+    ax = pt.figure(figsize=(10,10)).add_subplot(111, projection='3d')
     state.render(ax)
 
     target = np.eye(4)
