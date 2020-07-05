@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     # Load demonstration
     smile_scaling = .1
-    demopath = "../demos/test/"
+    demopath = "../demos/panel/"
     demo_states, actions = pd.parse_demo(demopath, scale=smile_scaling)
     demo_states = [s.tuplify() for s in demo_states]
     demo_ops, demo_args = zip(*[(a["name"], a["args"]) for a in actions])

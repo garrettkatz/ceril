@@ -11,11 +11,12 @@ class SmileState(object):
             bbox=(20*scale,12*scale,2*scale))
 
         self.things = {"tabletop": tabletop}
-        self.gripping = {"LeftHand": "nothing", "RightHand": "nothing"}
+        self.gripping = {"LeftHand": "nothing", "RightHand": "nothing", "AnyHand": "nothing"}
         self.controls = {}
     
     def tree_string(self):
-        s = "%s in left, %s in right" % (self.gripping["LeftHand"], self.gripping["RightHand"])
+        s = "%s in left, %s in right, %s in any" % tuple(
+            self.gripping[hand] for hand in ["LeftHand", "RightHand", "AnyHand"])
         for name, thing in self.things.items():
             s += "\n%s at %s" % (thing, thing.position)
         # for name, control_state in self.controls.items():
@@ -25,7 +26,7 @@ class SmileState(object):
     
     def tuplify(self):
         # Unique hashable state representation (tuples of tuples)
-        hands = ["LeftHand", "RightHand"]
+        hands = ["LeftHand", "RightHand", "AnyHand"]
         things = sorted(self.things.keys())
         controls = sorted(self.controls.keys())
         return tuple(

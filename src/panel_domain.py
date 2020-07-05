@@ -112,7 +112,7 @@ if __name__ == "__main__":
     # def print_import(mod): print(mod)
     # print_import(pd)
 
-    states, actions = pd.parse_demo("../demos/test")
+    states, actions = pd.parse_demo("../demos/panel")
     tasks, args = zip(*[(a["name"], a["args"]) for a in actions])
     states = [s.tuplify() for s in states]
     # print(states)

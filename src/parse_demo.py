@@ -57,7 +57,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as pt
 
     smile_scaling = .1 # used to globally rescale distance units in SMILE if needed
-    states, actions = parse_demo("../demos/test", scale=smile_scaling)
+    states, actions = parse_demo("../demos/panel", scale=smile_scaling)
 
     # Prints all the states and actions in the demo
     print(states[0].tree_string())
